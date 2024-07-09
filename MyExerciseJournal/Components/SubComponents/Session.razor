@@ -12,7 +12,8 @@
         </MudStack>
         <MudGrid>
             <MudItem xs="12">
-                <MudDataGrid T="Exercise" Items="@Exercises" Hover="true" Dense="true" SelectedItemChanged="@SetSelected">
+                <MudDataGrid T="Exercise" Items="@Exercises" Hover="true" Dense="true" RowClick="@SetSelected" SelectedItem="selectedExercise"
+                             RowClassFunc="GetRowClass">
                     <Columns>
                         <PropertyColumn Property="x=>x.Name" />
                         <PropertyColumn Property="x=>x.Sets" />
@@ -57,6 +58,13 @@
 
 }
 
+<style>
+
+    .selected-row {
+        background: #eee;
+    }
+</style>
+
 
 @code {
     [CascadingParameter] User CurrentUser { get; set; }
@@ -84,9 +92,17 @@
         await InvokeAsync(StateHasChanged);
     }
 
-    private void SetSelected(Exercise exercise)
+    private void SetSelected(DataGridRowClickEventArgs<Exercise> args)
     {
-        selectedExercise = exercise;
+        if (selectedExercise == args.Item)
+            selectedExercise = null;
+        else
+            selectedExercise = args.Item;
+    }
+
+    private string GetRowClass(Exercise exercise, int rowNumber)
+    {
+        return exercise == selectedExercise ? "selected-row" : string.Empty;
     }
 
     private void UpdateSelectionTypeId()

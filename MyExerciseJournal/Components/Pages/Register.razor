@@ -40,6 +40,6 @@
         success = true;
         StateHasChanged();
         ViewModel.RegisterNewUser(model.Username);
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/login", true);
     }
 }

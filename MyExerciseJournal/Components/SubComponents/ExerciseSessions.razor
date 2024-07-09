@@ -6,7 +6,8 @@
 <MudPaper>
     <MudGrid>
         <MudItem xs="3">
-            <MudDataGrid T="UserSession" Items="_sessions" SelectedItemChanged="@SetSelectedSession">
+            <MudDataGrid T="UserSession" Items="_sessions" SelectedItem="@SelectedSession" RowClick="@SetSelectedSession"
+                         RowClassFunc="GetRowClass">
                 <Columns>
                     <PropertyColumn Property="x=>x.Date" />
                     <TemplateColumn>
@@ -32,6 +33,12 @@
         </MudDialog>
     
 </MudPaper>
+
+<style>
+    .selected-row{
+        background: #eee;
+    }
+</style>
 @code {
     [CascadingParameter] User CurrentUser { get; set; }
 
@@ -52,18 +59,23 @@
     }
 
 
-    private async Task SetSelectedSession(UserSession selected)
+    private void SetSelectedSession(DataGridRowClickEventArgs<UserSession> args)
     {
-        if (SelectedSession == selected)
+        if (SelectedSession == args.Item)
         {
             SelectedSession = null;
         }
         else
         {
-            SelectedSession = selected;
+            SelectedSession = args.Item;
         }
 
-        await InvokeAsync(StateHasChanged);
+        StateHasChanged();
+    }
+
+    private string GetRowClass(UserSession session, int rowNumber)
+    {
+        return session == SelectedSession ? "selected-row" : string.Empty;
     }
 
     private void CreateNewSession()
