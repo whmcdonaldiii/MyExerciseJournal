@@ -42,18 +42,15 @@ namespace MyExerciseJournal.Persistence
                         exercises.Insert(exercise);
                     else
                         exercises.Update(exercise);
-
                 }
 
                 if (session.Id == 0)
                     sessionsCollection.Insert(session);
                 else
                     sessionsCollection.Update(session);
-
             }
 
             collection.Update(user);
-
         }
 
         public void DeleteExercise(Exercise exercise)
@@ -75,6 +72,5 @@ namespace MyExerciseJournal.Persistence
 
             return sessions.Find(x => x.UserId == userId);
         }
-
     }
 }

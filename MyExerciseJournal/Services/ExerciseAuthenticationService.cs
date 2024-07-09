@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace MyExerciseJournal.Services
 {
-    public class ExerciseAuthenticationService : AuthenticationStateProvider
+    public class ExerciseAuthenticationService
     {
         private readonly ExerciseRepository _repo;
         private readonly ILocalStorageService _localStorage;
@@ -17,11 +17,6 @@ namespace MyExerciseJournal.Services
         }
 
         public User CurrentUser { get; private set; }
-
-        public override Task<AuthenticationState> GetAuthenticationStateAsync()
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<User?> GetCurrentUserAsync()
         {
@@ -34,8 +29,7 @@ namespace MyExerciseJournal.Services
                 List<User> users = _repo.GetAllUsers().ToList();
                 CurrentUser = users.First(u => u.Name == userName);
                 return CurrentUser;
-            }
-            
+            } 
             return null;
         }
 
@@ -48,24 +42,6 @@ namespace MyExerciseJournal.Services
                 return true;
             }
             return false;
-
-
         }
-
-        public async Task Login(string username)
-        {
-      
-            List<User> users = _repo.GetAllUsers().ToList();
-     
-
-                
-  
-        }
-    }
-
-    public class LoginCredentials
-    {
-        public bool IsLoggedIn { get; set; }
-        public string UserName { get; set; }
     }
 }
