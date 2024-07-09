@@ -1,0 +1,51 @@
+﻿@using Blazored.LocalStorage
+@using MudBlazor
+@using MyExerciseJournal.Models
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@inject ILocalStorageService LocalStorage
+@inject ExerciseAuthenticationService AuthenticationService
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudPopoverProvider/>
+
+<MudLayout>
+    <MudAppBar>
+        My Exercise Journal
+        @if (CurrentUser != null)
+        {
+            <div class="ml-auto">
+                <MudButton Variant="Variant.Filled" OnClick="Logout" Color="Color.Primary">Logout</MudButton>
+            </div>
+        }
+    </MudAppBar>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
+            <CascadingValue Value="@CurrentUser"> 
+                @Body               
+            </CascadingValue>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+
+@code {
+    public User CurrentUser { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        CurrentUser = await AuthenticationService.GetCurrentUserAsync();
+        if (CurrentUser == null)
+            NavigationManager.NavigateTo("/login");
+    }
+
+    private async Task Logout()
+    {
+        await LocalStorage.RemoveItemAsync("isLoggedIn");
+        CurrentUser = null;
+        NavigationManager.NavigateTo("/login");
+      
+    }
+}

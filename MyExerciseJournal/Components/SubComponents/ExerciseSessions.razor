@@ -1,0 +1,96 @@
+﻿@using MyExerciseJournal.Models
+@using MyExerciseJournal.Persistence
+@inject ExerciseRepository Repo
+<h3>ExerciseSessions</h3>
+<MudText Typo="Typo.h6">Welome @CurrentUser.Name!</MudText>
+<MudPaper>
+    <MudGrid>
+        <MudItem xs="3">
+            <MudDataGrid T="UserSession" Items="_sessions" SelectedItemChanged="@SetSelectedSession">
+                <Columns>
+                    <PropertyColumn Property="x=>x.Date" />
+                    <TemplateColumn>
+                        <CellTemplate>
+                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="@DeleteSession">Delete</MudIconButton>
+                        </CellTemplate>
+                    </TemplateColumn>
+                </Columns>
+            </MudDataGrid>
+            <MudButton Variant="Variant.Filled" OnClick="CreateNewSession">New Session</MudButton>
+        </MudItem>
+        <MudItem xs="9">
+            @if (SelectedSession != null)
+            {
+                <Session UserSession="@SelectedSession" />
+            }
+        </MudItem>
+    </MudGrid>
+        <MudDialog @bind-Visible="isDialogOpen">
+            <DialogContent>
+                <NewSession OnSave="@HandleSave" />
+            </DialogContent>
+        </MudDialog>
+    
+</MudPaper>
+@code {
+    [CascadingParameter] User CurrentUser { get; set; }
+
+    private List<UserSession> _sessions { get; set; }
+
+    public UserSession? SelectedSession { get; set; }
+    private SessionType? _sessionType;
+    private bool IsNew;
+    private bool isDialogOpen;
+
+
+    protected override void OnInitialized()
+    {
+        if(CurrentUser!=null)
+        {
+            _sessions = CurrentUser.Sessions ?? new();
+        }
+    }
+
+
+    private async Task SetSelectedSession(UserSession selected)
+    {
+        if (SelectedSession == selected)
+        {
+            SelectedSession = null;
+        }
+        else
+        {
+            SelectedSession = selected;
+        }
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void CreateNewSession()
+    {
+        SelectedSession = null;
+        isDialogOpen = true;
+        StateHasChanged();
+    }
+
+    private void DeleteSession()
+    {
+        if(SelectedSession != null)
+        {
+            CurrentUser.Sessions.RemoveAll(s => s.Id == SelectedSession.Id);
+            Repo.UpdateUser(CurrentUser);
+        }
+        SelectedSession = null;
+        StateHasChanged();
+    }
+
+    private void HandleSave(UserSession session)
+    {
+        session.UserId = CurrentUser.Id;
+        _sessions.Add(session);
+        CurrentUser.Sessions = _sessions;
+        Repo.UpdateUser(CurrentUser);
+        isDialogOpen = false;
+        SelectedSession = null;
+    }
+}

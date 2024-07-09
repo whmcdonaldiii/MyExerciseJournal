@@ -1,0 +1,45 @@
+﻿@page "/register"
+@using System.ComponentModel.DataAnnotations
+@using MyExerciseJournal.ViewModels
+@inject NavigationManager NavigationManager
+@inject  RegisterViewModel ViewModel
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <MudGrid>
+        <MudItem xs="12" sm="7">
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Label="First name" HelperText="Max. 16 characters"
+                                  @bind-Value="model.Username" For="@(() => model.Username)" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>
+
+
+
+@code {
+    RegisterAccountForm model = new RegisterAccountForm();
+    bool success;
+
+  
+    public class RegisterAccountForm
+    {
+        [Required]
+        [StringLength(16, ErrorMessage = "Name length can't be more than 16.")]
+        public string Username { get; set; } = "";
+    }
+
+    private void OnValidSubmit(EditContext context)
+    {
+        success = true;
+        StateHasChanged();
+        ViewModel.RegisterNewUser(model.Username);
+        NavigationManager.NavigateTo("/");
+    }
+}

@@ -1,0 +1,41 @@
+﻿@using Blazored.LocalStorage
+@using MudBlazor
+@using System.Text.Json
+@using MyExerciseJournal.Models
+@inject NavigationManager NavigationManager
+
+<MudNavMenu>
+    <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard</MudNavLink>
+    
+</MudNavMenu>
+
+@code{
+    [Inject]
+    public ILocalStorageService LocalStorage { get; set; }
+
+    private bool isLoggedIn;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            string json = await LocalStorage.GetItemAsync<string>("isLoggedIn");
+            if(!string.IsNullOrWhiteSpace(json))
+            {
+                LoginCredentials credentials = JsonSerializer.Deserialize<LoginCredentials>(json);
+                isLoggedIn = credentials.IsLoggedIn;
+                StateHasChanged();
+            }
+
+        }
+    }
+
+
+    private async Task HandleLogout()
+    {
+        await LocalStorage.RemoveItemAsync("isLoggedIn");
+        NavigationManager.NavigateTo("/login");
+        isLoggedIn = false;
+        await InvokeAsync(StateHasChanged);
+    }
+}

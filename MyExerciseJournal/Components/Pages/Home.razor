@@ -1,0 +1,28 @@
+﻿@page "/"
+@using MyExerciseJournal.Models
+@inject ExerciseAuthenticationService AuthenticationService
+@inject NavigationManager NavigationManager
+
+
+@if(CurrentUser !=null)
+{
+    <MudGrid>
+        <MudItem lg="12">
+            <ExerciseSessions />
+        </MudItem>
+    </MudGrid>
+  }
+
+@code {
+    [CascadingParameter] User CurrentUser { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+    }
+}
