@@ -15,7 +15,6 @@ builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddCascadingAuthenticationState();
 
-
 builder.Services.AddMudServices();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<ExerciseRepository>();

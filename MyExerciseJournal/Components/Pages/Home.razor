@@ -1,12 +1,9 @@
 ﻿@page "/"
 @using MyExerciseJournal.Models
-@inject ExerciseAuthenticationService AuthenticationService
-@inject NavigationManager NavigationManager
-
 
 @if(CurrentUser !=null)
 {
-    <MudGrid>
+    <MudGrid Class="pa-4" >
         <MudItem lg="12">
             <ExerciseSessions />
         </MudItem>

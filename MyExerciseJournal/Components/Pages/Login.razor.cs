@@ -1,8 +1,8 @@
 ﻿using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using MyExerciseJournal.Services;
-using System.ComponentModel.DataAnnotations;
+using MyExerciseJournal.ViewModels;
 using System.Text.Json;
 
 namespace MyExerciseJournal.Components.Pages
@@ -18,18 +18,9 @@ namespace MyExerciseJournal.Components.Pages
         [Inject]
         ExerciseAuthenticationService AuthenticationService { get; set; }
 
-        public LoginForm model { get; set; } = new();
-
+        public LoginViewModel model { get; set; } = new();
         bool success;
-
         string errorMessage = "";
-
-        public class LoginForm
-        {
-            [Required]
-            [StringLength(16, ErrorMessage = "Name length can't be more than 16.")]
-            public string Username { get; set; } = "";
-        }
 
         protected override void OnInitialized()
         {

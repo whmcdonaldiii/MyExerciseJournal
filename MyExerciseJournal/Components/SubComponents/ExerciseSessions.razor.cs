@@ -13,12 +13,10 @@ namespace MyExerciseJournal.Components.SubComponents
         public ExerciseRepository Repo { get; set; }
 
         private List<UserSession> _sessions { get; set; }
-
         public UserSession? SelectedSession { get; set; }
         private SessionType? _sessionType;
         private bool IsNew;
         private bool isDialogOpen;
-
 
         protected override void OnInitialized()
         {
@@ -27,7 +25,6 @@ namespace MyExerciseJournal.Components.SubComponents
                 _sessions = CurrentUser.Sessions ?? new();
             }
         }
-
 
         private void SetSelectedSession(DataGridRowClickEventArgs<UserSession> args)
         {
@@ -41,6 +38,10 @@ namespace MyExerciseJournal.Components.SubComponents
             }
 
             StateHasChanged();
+        }
+        private bool IsRowSelected(UserSession session)
+        {
+            return SelectedSession == session;
         }
 
         private string GetRowClass(UserSession session, int rowNumber)

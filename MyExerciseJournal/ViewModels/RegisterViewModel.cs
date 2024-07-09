@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MyExerciseJournal.Models;
 using MyExerciseJournal.Persistence;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyExerciseJournal.ViewModels
 {
@@ -13,13 +14,17 @@ namespace MyExerciseJournal.ViewModels
             _repo = repo;
         }
 
-        public void RegisterNewUser(string name)
+        [Required]
+        [StringLength(16, ErrorMessage = "Name length can't be more than 16.")]
+        public string Username { get; set; } = "";
+
+        public void RegisterNewUser()
         {
             List<User> users = _repo.GetAllUsers().ToList();
 
-            if(!users.Any(x=>x.Name.ToLower() == name.ToLower()))
+            if(!users.Any(x=>x.Name.ToLower() == Username.ToLower()))
             {
-                _repo.InsertUser(new() { Name = name });
+                _repo.InsertUser(new() { Name = Username });
             }
         }
     }

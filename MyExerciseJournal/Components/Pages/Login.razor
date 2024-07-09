@@ -1,6 +1,6 @@
 ﻿@page "/login"
 
-<EditForm Model="@model" method="post" OnValidSubmit="@OnValidSubmit">
+<EditForm style="margin-top:50px;" Model="@model" method="post" OnValidSubmit="@OnValidSubmit">
     <DataAnnotationsValidator />
     <MudGrid>
         <MudItem xs="12" sm="7">
@@ -14,8 +14,7 @@
                     }
                 </MudCardContent>
                 <MudCardActions>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Login</MudButton>
-                    
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Login</MudButton>  
                 </MudCardActions>
             </MudCard>
         </MudItem>
