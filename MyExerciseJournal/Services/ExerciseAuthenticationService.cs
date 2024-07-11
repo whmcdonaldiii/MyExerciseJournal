@@ -1,5 +1,4 @@
-﻿using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components.Authorization;
+﻿using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using MyExerciseJournal.Models;
 using MyExerciseJournal.Persistence;
 using System.Text.Json;
@@ -9,10 +8,10 @@ namespace MyExerciseJournal.Services
     public class ExerciseAuthenticationService
     {
         private readonly ExerciseRepository _repo;
-        private readonly ILocalStorageService _localStorage;
-        public ExerciseAuthenticationService(ILocalStorageService localStorage, ExerciseRepository repo)
+        private readonly ProtectedSessionStorage _protectedSessionStorage;
+        public ExerciseAuthenticationService(ProtectedSessionStorage protectedSessionStorage, ExerciseRepository repo)
         {
-            _localStorage = localStorage;
+            _protectedSessionStorage = protectedSessionStorage;
             _repo = repo;
         }
 
@@ -20,10 +19,10 @@ namespace MyExerciseJournal.Services
 
         public async Task<User?> GetCurrentUserAsync()
         {
-            string json = await _localStorage.GetItemAsync<string>("isLoggedIn");
-            if (!string.IsNullOrWhiteSpace(json))
+            var json = await _protectedSessionStorage.GetAsync<string>("isLoggedIn");
+            if (!string.IsNullOrWhiteSpace(json.Value))
             {
-                LoginCredentials credentials = JsonSerializer.Deserialize<LoginCredentials>(json);
+                LoginCredentials credentials = JsonSerializer.Deserialize<LoginCredentials>(json.Value);
                 string userName = credentials.UserName;
 
                 List<User> users = _repo.GetAllUsers().ToList();

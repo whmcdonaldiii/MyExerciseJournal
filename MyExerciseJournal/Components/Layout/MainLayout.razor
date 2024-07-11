@@ -1,9 +1,9 @@
-﻿@using Blazored.LocalStorage
+﻿@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @using MudBlazor
 @using MyExerciseJournal.Models
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
-@inject ILocalStorageService LocalStorage
+@inject ProtectedSessionStorage ProtectedSessionStorage
 @inject ExerciseAuthenticationService AuthenticationService
 
 <MudThemeProvider />
@@ -43,7 +43,7 @@
 
     private async Task Logout()
     {
-        await LocalStorage.RemoveItemAsync("isLoggedIn");
+        await ProtectedSessionStorage.DeleteAsync("isLoggedIn");
         CurrentUser = null;
         NavigationManager.NavigateTo("/login");
       
