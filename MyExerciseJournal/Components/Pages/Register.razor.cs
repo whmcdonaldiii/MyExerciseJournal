@@ -13,16 +13,9 @@ namespace MyExerciseJournal.Components.Pages
         RegisterViewModel model { get; set; }
         bool success;
 
-
-        public class RegisterAccountForm
-        {
-            
-        }
-
         private void OnValidSubmit(EditContext context)
         {
             success = true;
-            StateHasChanged();
             model.RegisterNewUser();
             NavigationManager.NavigateTo("/login", true);
         }

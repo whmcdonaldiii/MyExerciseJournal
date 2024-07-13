@@ -22,11 +22,6 @@ namespace MyExerciseJournal.Components.Pages
         bool success;
         string errorMessage = "";
 
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-        }
-
         private async Task OnValidSubmit(EditContext context)
         {
             success = AuthenticationService.AuthenticateUser(model.Username);

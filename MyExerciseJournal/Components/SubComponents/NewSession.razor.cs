@@ -13,7 +13,6 @@ namespace MyExerciseJournal.Components.SubComponents
         protected override void OnInitialized()
         {
             sessionTypes = UserSession.GetSessionTypes();
-            StateHasChanged();
         }
 
         private async Task SaveSession()
