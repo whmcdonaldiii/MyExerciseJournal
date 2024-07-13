@@ -36,8 +36,6 @@ namespace MyExerciseJournal.Components.SubComponents
             {
                 SelectedSession = args.Item;
             }
-
-            //StateHasChanged();
         }
         private bool IsRowSelected(UserSession session)
         {
@@ -53,7 +51,6 @@ namespace MyExerciseJournal.Components.SubComponents
         {
             SelectedSession = null;
             isDialogOpen = true;
-            //StateHasChanged();
         }
 
         private void DeleteSession()
